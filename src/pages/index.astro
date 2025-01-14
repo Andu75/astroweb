@@ -1,11 +1,247 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astro Portfolio</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Background video */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        /* Background stars */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Content */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            animation: fadeIn 2s ease-out;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            animation: fadeIn 3s ease-out;
+        }
+
+        a {
+            display: inline-block;
+            text-decoration: none;
+            color: #000;
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s, color 0.3s;
+            animation: fadeIn 4s ease-out;
+        }
+
+        a:hover {
+            background: #444;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: all 0.3s ease;
+        }
+
+        /* About Me Section */
+        .about {
+            padding: 50px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 50px 20px;
+            background: rgba(15, 15, 15, 0.9);
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact input, .contact textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #222;
+            color: #fff;
+        }
+
+        .contact input[type="submit"] {
+            background: #fff;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .contact input[type="submit"]:hover {
+            background: #444;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <video class="video-background" autoplay loop muted>
+        <source src="https://www.videvo.net/videvo_files/converted/2015_08/preview/Timelapse_NightSky.mp440891.webm" type="video/webm">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+    <script>
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 500; i++) { // Increased the number of stars to 500
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = Math.random() * window.innerHeight + 'px';
+            star.style.left = Math.random() * window.innerWidth + 'px';
+            starsContainer.appendChild(star);
+        }
+
+        const meteoritesContainer = document.createElement('div');
+        meteoritesContainer.style.position = 'fixed';
+        meteoritesContainer.style.top = '0';
+        meteoritesContainer.style.left = '0';
+        meteoritesContainer.style.width = '100%';
+        meteoritesContainer.style.height = '100%';
+        meteoritesContainer.style.zIndex = '-1';
+        document.body.appendChild(meteoritesContainer);
+
+        function createMeteorite() {
+            const meteorite = document.createElement('div');
+            meteorite.style.position = 'absolute';
+            meteorite.style.width = '4px';
+            meteorite.style.height = '4px';
+            meteorite.style.background = 'white';
+            meteorite.style.borderRadius = '50%';
+            meteorite.style.boxShadow = '0 0 10px white';
+            meteorite.style.top = Math.random() * window.innerHeight + 'px';
+            meteorite.style.left = Math.random() * window.innerWidth + 'px';
+            meteorite.style.opacity = '0';
+            meteoritesContainer.appendChild(meteorite);
+
+            const animation = meteorite.animate(
+                [
+                    { transform: 'translateY(0)', opacity: 1 },
+                    { transform: 'translateY(200px)', opacity: 0 }
+                ],
+                { duration: 2000, easing: 'ease-in-out' }
+            );
+
+            animation.onfinish = () => meteorite.remove();
+        }
+
+        setInterval(createMeteorite, 500); // Adjusted timing to attempt meteorite creation every 500ms
+    </script>
+
+    <div class="container">
+        <h1>Welcome to Echo Studios</h1>
+        <p>Driven by Detail. Photography at It's Finest.</p>
+        <a href="#">Explore More</a>
+    </div>
+
+    <div class="about">
+        <h2>About Us</h2>
+        <p>
+            Hi, my name is Andu, I am based in Romania, and I'm the owner of Echo Studios. 
+            Capturing the art of motion, where every shot is a symphony of speed, style, and passion.
+            As a passionate photographer and videographer, I’m committed to capturing the moments that matter to you. 
+        </p>
+    </div>
+
+    <div class="contact">
+        <h2>Let's work together</h2>
+        <form>
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <input type="submit" value="Send Message">
+        </form>
+    </div>
+</body>
+</html>
+
